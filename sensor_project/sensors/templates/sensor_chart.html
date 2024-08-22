@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Sensor Data Chart</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+</head>
+<body>
+<div id="container" style="width: 100%; height: 400px; margin: 0 auto"></div>
+<script language="JavaScript">
+$(document).ready(function() {
+    var title = {
+        text: 'Sensor Data Over Time'   
+    };
+    var subtitle = {
+        text: 'Source: aiotdb'
+    };
+    var xAxis = {
+        title: {
+            text: 'Index'
+        },
+        categories: {{ indices|safe }}
+    };
+    var yAxis = {
+        title: {
+            text: 'Value'
+        },
+        plotLines: [{
+            value: 0,
+            width: 1,
+            color: '#808080'
+        }]
+    };   
+
+    var tooltip = {
+        valueSuffix: ''
+    }
+
+    var legend = {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'middle',
+        borderWidth: 0
+    };
+
+    var series =  [
+        {
+            name: 'Temperature (°C)',
+            data: {{ temps|safe }}
+        }, 
+        {
+            name: 'Humidity (%)',
+            data: {{ humis|safe }}
+        }
+    ];
+
+    var json = {};
+
+    json.title = title;
+    json.subtitle = subtitle;
+    json.xAxis = xAxis;
+    json.yAxis = yAxis;
+    json.tooltip = tooltip;
+    json.legend = legend;
+    json.series = series;
+
+    $('#container').highcharts(json);
+});
+</script>
+</body>
+</html>
